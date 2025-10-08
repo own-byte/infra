@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    image:  viniciuscassemira/own_byte_api:latest
+    container_name: own_byte_api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONT_URL=${FRONT_URL}
+    networks:
+      - own_byte_network
+
+  web:
+    image: viniciuscassemira/own_byte_web:latest
+    container_name: own_byte_web
+    restart: always
+    ports:
+      - "5173:80"
+    networks:
+      - own_byte_network
+    depends_on:
+      - api
+
+networks:
+  own_byte_network:
+    driver: bridge
